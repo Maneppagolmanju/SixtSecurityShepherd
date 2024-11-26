@@ -1,6 +1,7 @@
 package servlets.module.challenge;
 
 import dbProcs.Getter;
+import org.apache.commons.text.StringEscapeUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
@@ -80,7 +81,8 @@ public class XssChallengeSix extends HttpServlet {
           String searchTerm = request.getParameter("searchTerm");
           log.debug("User Submitted - " + searchTerm);
           searchTerm = XssFilter.anotherBadUrlValidate(searchTerm);
-          userPost = "<a href=\"" + searchTerm + "\">Your HTTP Link!</a>";
+          String encodedSearchTerm = StringEscapeUtils.escapeHtml4(searchTerm);
+          userPost = "<a href=\"" + encodedSearchTerm + "\">Your HTTP Link!</a>";
           log.debug("After Sanitising - " + searchTerm);
 
           boolean xssDetected = FindXSS.search(userPost);
